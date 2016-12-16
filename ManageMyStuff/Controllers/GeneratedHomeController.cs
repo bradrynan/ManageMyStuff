@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace ManageMyStuff.Controllers
 {
-    public class HomeController : Controller
+    public class GeneratedHomeController : Controller
     {
         public ActionResult Index()
         {
