@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <script>
+function myFunction() {
+
+
+	var person1 = {
+    firstName: "Brad",
+    lastName : "Rynan",
+        fullName : function() {
+           return this.firstName + " " + this.lastName;
+        }
+    };
+
+	var person2 = {
+    firstName: "Monica",
+    lastName : "Twomey",
+        fullName : function() {
+           return this.firstName + " " + this.lastName;
+        }
+    };
+
+    var firstName = document.getElementById("firstName").innerHTML;
+
+
+	if (firstName != person1.firstName)
+	{
+  	  document.getElementById("firstName").innerHTML = person1.firstName;
+      document.getElementById("lastName").innerHTML = person1.lastName;
+	  document.getElementById("fullName").innerHTML = person1.fullName();
+	}
+
+	else
+	{
+	  document.getElementById("firstName").innerHTML = person2.firstName;
+      document.getElementById("lastName").innerHTML = person2.lastName;
+	  document.getElementById("fullName").innerHTML = person2.fullName();
+	}
+}
+
+function SetFullName() {
+
+
+    var firstName = document.getElementById("firstName").innerHTML;
+    var lastName = document.getElementById("lastName").innerHTML;
+
+
+    document.getElementById("fullName").innerHTML = firstName + ' ' + lastName;
+
+}
+    </script>
+</head>
+<body>
+
+    <h1>My Web Page</h1>
+
+    <p id="firstName">Hello.</p>
+    <div id="lastName">World.</div>
+    <div id="fullName">World.</div>
+
+    <script>
+        var person = prompt("Please enter your first name", "Harry");
+        if (person != null) {
+            document.getElementById("firstName").innerHTML =
+            person;
+        }
+
+        person = prompt("Please enter your last name", "Potter");
+        if (person != null) {
+            document.getElementById("lastName").innerHTML =
+            person;
+        }
+
+        SetFullName();
+    </script>
+
+
+    <p>
+        <button type="button" onclick="myFunction()">Try it</button>
+    </p>
+
+
+
+    <p>When you click on "Try it", the two elements will change.</p>
+
+</body>
+</html>

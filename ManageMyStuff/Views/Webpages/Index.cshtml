@@ -1,0 +1,60 @@
+﻿@model IEnumerable<ManageMyStuff.Models.Webpage>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table table-bordered table-striped">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Category)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WebAddressDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WebAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WebAddressExtraDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WebAddressExtra)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Category)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.WebAddressDescription)
+        </td>
+        <td>
+            <a href=@Html.DisplayFor(modelItem => item.WebAddress) target="_blank">@Html.DisplayFor(modelItem => item.WebAddress)</a>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.WebAddressExtraDescription)
+        </td>
+        <td>
+            <a href=@Html.DisplayFor(modelItem => item.WebAddressExtra) target="_blank">@Html.DisplayFor(modelItem => item.WebAddressExtra)</a>
+        </td>
+        <td>
+            <input type="checkbox" name="vehicle" value="Bike" onclick=alert('Hello')> I have a bike<br>
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.WebPageID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.WebPageID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.WebPageID })
+        </td>
+    </tr>
+}
+
+</table>

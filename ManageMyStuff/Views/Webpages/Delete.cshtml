@@ -1,0 +1,64 @@
+﻿@model ManageMyStuff.Models.Webpage
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Webpage</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Category)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WebAddressDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WebAddressDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WebAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WebAddress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WebAddressExtraDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WebAddressExtraDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WebAddressExtra)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WebAddressExtra)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

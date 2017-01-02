@@ -1,0 +1,58 @@
+﻿@model ManageMyStuff.Models.Webpage
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Webpage</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Category)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WebAddressDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WebAddressDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WebAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WebAddress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WebAddressExtraDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WebAddressExtraDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WebAddressExtra)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WebAddressExtra)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.WebPageID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
