@@ -3,7 +3,7 @@ namespace ManageMyStuff.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialCreate : DbMigration
+    public partial class initial : DbMigration
     {
         public override void Up()
         {
@@ -11,12 +11,14 @@ namespace ManageMyStuff.Migrations
                 "dbo.Webpages",
                 c => new
                     {
-                        ID = c.String(nullable: false, maxLength: 128),
+                        WebPageID = c.Int(nullable: false, identity: true),
+                        Category = c.String(nullable: false, maxLength: 50),
                         WebAddress = c.String(nullable: false),
-                        Description = c.String(nullable: false),
-                        Category = c.String(maxLength: 20),
+                        WebAddressDescription = c.String(nullable: false),
+                        WebAddressExtra = c.String(),
+                        WebAddressExtraDescription = c.String(),
                     })
-                .PrimaryKey(t => t.ID);
+                .PrimaryKey(t => t.WebPageID);
             
         }
         

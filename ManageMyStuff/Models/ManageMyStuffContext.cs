@@ -20,5 +20,7 @@ namespace ManageMyStuff.Models
         }
 
         public System.Data.Entity.DbSet<ManageMyStuff.Models.Webpage> Webpages { get; set; }
+
+        public System.Data.Entity.DbSet<ManageMyStuff.Models.Photo> Photos { get; set; }
     }
 }

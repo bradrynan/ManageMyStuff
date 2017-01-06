@@ -10,7 +10,6 @@ namespace ManageMyStuff.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            ContextKey = "ManageMyStuff.Models.ManageMyStuffContext";
         }
 
         protected override void Seed(ManageMyStuff.Models.ManageMyStuffContext context)
