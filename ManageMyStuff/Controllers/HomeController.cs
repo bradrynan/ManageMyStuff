@@ -6,6 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Azure; // Namespace for CloudConfigurationManager
+using Microsoft.WindowsAzure.Storage; // Namespace for CloudStorageAccount
+using Microsoft.WindowsAzure.Storage.Blob; // Namespace for Blob storage types
 
 namespace ManageMyStuff.Controllers
 {
@@ -42,34 +45,102 @@ namespace ManageMyStuff.Controllers
             return View(photo);
         }
 
-        public Size NewImageSize(Size imageSize, Size newSize)
+        private void SaveToFolder(HttpPostedFileBase file, Photo photo)
         {
-            Size finalSize;
-            double tempval;
-            if (imageSize.Height > newSize.Height || imageSize.Width > newSize.Width)
+            // Retrieve storage account from connection string.
+             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+                CloudConfigurationManager.GetSetting("StorageConnectionString"));
+
+            // Create the blob client.
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+
+            // Retrieve reference to a previously created container.
+            CloudBlobContainer container = blobClient.GetContainerReference("managemystuffphotos");
+
+            // Retrieve reference to a blob named "photo1.jpg".
+            CloudBlockBlob blockBlob = container.GetBlockBlobReference(file.FileName);
+
+            photo.ImagePath = blockBlob.Uri.ToString();
+
+            // Create or overwrite the "myblob" blob with contents from a local file.
+            using (var fileStream = file.InputStream)
             {
-                if (imageSize.Height > imageSize.Width)
-                    tempval = newSize.Height / (imageSize.Height * 1.0);
-                else
-                    tempval = newSize.Width / (imageSize.Width * 1.0);
-
-                finalSize = new Size((int)(tempval * imageSize.Width), (int)(tempval * imageSize.Height));
+                blockBlob.UploadFromStream(fileStream);
             }
-            else
-                finalSize = imageSize; // image is already small size
 
-            return finalSize;
+            // blockBlob.DownloadToStream(file.InputStream);
         }
 
-        private void SaveToFolder(Image img, string fileName, string extension, Size newSize, string pathToSave)
+
+
+        private void ListBlobs()
         {
-            // Get new resolution
-            Size imgSize = NewImageSize(img.Size, newSize);
-            using (System.Drawing.Image newImg = new Bitmap(img, imgSize.Width, imgSize.Height))
+            // Retrieve storage account from connection string.
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+                CloudConfigurationManager.GetSetting("StorageConnectionString"));
+
+            // Create the blob client.
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+
+            // Retrieve reference to a previously created container.
+            CloudBlobContainer container = blobClient.GetContainerReference("managemystuffphotos");
+
+            // Loop over items within the container and output the length and URI.
+            foreach (IListBlobItem item in container.ListBlobs(null, false))
             {
-                newImg.Save(Server.MapPath(pathToSave), img.RawFormat);
+                if (item.GetType() == typeof(CloudBlockBlob))
+                {
+                    CloudBlockBlob blob = (CloudBlockBlob)item;
+                    blob.DeleteIfExists();
+
+                }
+                else if (item.GetType() == typeof(CloudPageBlob))
+                {
+                    CloudPageBlob pageBlob = (CloudPageBlob)item;
+
+                }
+                else if (item.GetType() == typeof(CloudBlobDirectory))
+                {
+                    CloudBlobDirectory directory = (CloudBlobDirectory)item;
+                }
+
+
             }
         }
+
+        private void DeleteBlobs()
+        {
+            // Retrieve storage account from connection string.
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
+                CloudConfigurationManager.GetSetting("StorageConnectionString"));
+
+            // Create the blob client.
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+
+            // Retrieve reference to a previously created container.
+            CloudBlobContainer container = blobClient.GetContainerReference("managemystuffphotos");
+
+            // Loop over items within the container and output the length and URI.
+            foreach (IListBlobItem item in container.ListBlobs(null, false))
+            {
+                if (item.GetType() == typeof(CloudBlockBlob))
+                {
+                    CloudBlockBlob blob = (CloudBlockBlob)item;
+                    blob.DeleteIfExists();
+
+                }
+                else if (item.GetType() == typeof(CloudPageBlob))
+                {
+                    CloudPageBlob pageBlob = (CloudPageBlob)item;
+
+                }
+                else if (item.GetType() == typeof(CloudBlobDirectory))
+                {
+                    CloudBlobDirectory directory = (CloudBlobDirectory)item;
+                }
+            }
+        }
+
 
         [HttpPost]
         public ActionResult Create(Photo photo, IEnumerable<HttpPostedFileBase> files)
@@ -97,13 +168,7 @@ namespace ManageMyStuff.Controllers
                 model.CreatedOn = fi.LastWriteTime > dtSALDBMin ? fi.LastWriteTime: dtSALDBMin;
                 model.TakenBy = Environment.UserName;
 
-                using (var img = System.Drawing.Image.FromStream(file.InputStream))
-                {
-                    model.ImagePath = String.Format("/GalleryImages/{0}{1}", fileName, extension);
-
-                    // Save large size image, 800 x 800
-                    SaveToFolder(img, fileName, extension, new Size(800, 800), model.ImagePath);
-                }
+                SaveToFolder(file, model);
 
                 // Save record to database
                 db.Photos.Add(model);
@@ -112,5 +177,6 @@ namespace ManageMyStuff.Controllers
 
             return RedirectPermanent("/home");
         }
+
     }
 }
